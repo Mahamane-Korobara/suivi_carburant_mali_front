@@ -19,10 +19,16 @@ export const Page = styled.div`
 export const Card = styled.div`
   background: #ffffff;
   border-radius: 5px;
-  width: 100%;
-  max-width: 300px;
+  width: 95%;
+  max-width: ${props => props.$wide ? '600px' : '300px'};
   padding: 1.5rem;
   text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  
+  @media (max-width: 768px) {
+    padding: 1rem;
+    width: 90%;
+  }
 `;
 
 //Logo + nom du produit
@@ -64,6 +70,10 @@ export const Input = styled.input`
     outline: none;
     border-color: #0070f3;
   }
+  
+  @media (max-width: 768px) {
+    font-size: 0.85rem;
+  }
 `;
 
 // Checkbox + label
@@ -100,7 +110,7 @@ export const FooterDiv = styled.div`
 
 // Lien en bas
 export const Text = styled.p`
-  margin-top: 1rem;
+  margin-top: 0.2rem;
   font-size: 0.9rem;
   color: #fff;
   text-align: center;
@@ -112,4 +122,44 @@ export const Link = styled(NextLink)`
   text-decoration: none;
   cursor: pointer;
   font-weight: bold;
+`;
+
+// Conteneur pour disposer les inputs en grille
+export const FormGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+`;
+
+// Input pour la grille
+export const GridInput = styled.input`
+  padding: 10px;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  font-size: 0.9rem;
+  width: 100%;
+  box-sizing: border-box;
+  &:focus {
+    outline: none;
+    border-bottom: 1px solid #0070f3;
+  }
+  
+  @media (max-width: 768px) {
+    font-size: 0.85rem;
+  }
+`;
+
+// Conteneur pour un input pleine largeur
+export const FullWidthInput = styled(Input)`
+  grid-column: 1 / -1;
+  margin-bottom: 0;
+  @media (max-width: 768px) {
+    font-size: 0.85rem;
+  }
 `;
