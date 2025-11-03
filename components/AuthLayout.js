@@ -1,0 +1,20 @@
+import Image from 'next/image';
+import { Page, Card, Header, Title, FooterDiv } from "@/components/FormStyles";
+
+export default function AuthLayout({ title, children, footer }) {
+  return (
+    <Page>
+      <Header>
+        <Image src="/images/logo2.svg" alt="Logo" width={20} height={20} color='white' />
+        RED PRODUCT
+      </Header>
+
+      <Card>
+        {title && <Title>{title}</Title>}
+        {children}
+      </Card>
+
+      {footer && <FooterDiv>{footer}</FooterDiv>}
+    </Page>
+  );
+}
