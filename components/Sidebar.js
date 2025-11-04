@@ -2,7 +2,7 @@ import {
     SidebarContainer,
     SidebarItem,
     TextTitre
-} from "@/components/Styles_pages/DashboardStyles";
+} from "@/components/Styles_pages/SidebarStyles";
 import Image from 'next/image';
 
 export default function Sidebar({ items, onSelect, selected, isOpen }) {

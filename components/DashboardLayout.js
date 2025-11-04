@@ -8,7 +8,7 @@ import {
     Content,
     MenuButton,
     Overlay
-} from "@/components/Styles_pages/DashboardStyles";
+} from "@/components/Styles_pages/SidebarStyles";
 
 import DashboardPage from "@/components/pages/DashboardPage";
 import StationsPage from "@/components/pages/StationsPage";
@@ -55,7 +55,7 @@ export default function DashboardLayout() {
     <LayoutContainer>
       <Overlay isOpen={isMobileMenuOpen} onClick={closeMobileMenu} />
       <MenuButton onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-        {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        {isMobileMenuOpen ? <X size={24} style={{ display: 'none' }} /> : <Menu size={24} />}
       </MenuButton>
       <Sidebar 
         items={items} 
