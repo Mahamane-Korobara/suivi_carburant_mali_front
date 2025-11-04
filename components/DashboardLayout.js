@@ -12,9 +12,8 @@ import {
 
 import DashboardPage from "@/components/pages/DashboardPage";
 import StationsPage from "@/components/pages/StationsPage";
-import UsagersPage from "@/components/pages/UsagersPage";
 import CartePage from "@/components/pages/CartePage";
-import AlertesPage from "@/components/pages/AlertesPage";
+import SignalementPage from "@/components/pages/SignalementPage";
 import RapportsPage from "@/components/pages/RapportsPage";
 
 // Mapping des pages
@@ -22,8 +21,7 @@ const pages = {
   dashboard: DashboardPage,
   stations: StationsPage,
   carte: CartePage,
-  usagers: UsagersPage,
-  alertes: AlertesPage,
+  signalement: SignalementPage,
   rapports: RapportsPage,
 };
 
@@ -31,8 +29,7 @@ const items = [
   { key: "dashboard", label: "Dashboard", icon: icons.dashboard },
   { key: "stations", label: "Stations", icon: icons.stations },
   { key: "carte", label: "Carte", icon: icons.carte },
-  { key: "usagers", label: "Usagers", icon: icons.usagers },
-  { key: "alertes", label: "Alertes", icon: icons.alertes },
+  { key: "signalement", label: "Signalement", icon: icons.alertes },
   { key: "rapports", label: "Rapports", icon: icons.rapports },
 ];
 

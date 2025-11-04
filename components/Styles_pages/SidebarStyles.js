@@ -60,6 +60,25 @@ export const SidebarItem = styled.button`
   }
 `;
 
+export const LogOut = styled.button`
+  background: transparent;
+  color: white;
+  border: none;
+  font-size: 1rem;
+  text-align: left;
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 4px;
+  width: 100%;
+  flex-shrink: 0; // Empêche les items de se compresser
+
+  &:hover {
+    background: rgba(255,255,255,0.1);
+    color: #f7b32b;
+  }
+`;
+
 export const TextTitre = styled.div`
   display: flex;
   gap: 4px;

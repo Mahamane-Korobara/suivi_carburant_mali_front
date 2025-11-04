@@ -50,7 +50,7 @@ export default function DashboardPage() {
       </BigContainer>
 
       {/* Stats Interactions */}
-      <SectionTitle>Interactions Usagers</SectionTitle>
+      <SectionTitle>Interactions</SectionTitle>
       <BigContainer>
         <StatCard>
           <StatTitle>Totales interactions usagers</StatTitle>

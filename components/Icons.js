@@ -11,9 +11,13 @@ import {
   Bell,
   ClipboardList,
   Map,
+  Phone,
+  Lock,
+  Clock,
+  Trash,
 } from "lucide-react";
 
-// 🧭 Dictionnaire centralisé des icônes de l’app KARBU
+// Dictionnaire centralisé des icônes de l’app KARBU
 export const icons = {
   // Pages principales
   dashboard: <Home size={20} color="#0ea5e9" />,        // Bleu clair
@@ -31,4 +35,8 @@ export const icons = {
   // Autres utiles
   localisation: <MapPin size={20} color="#0ea5e9" />,
   niveau: <Gauge size={20} color="#22c55e" />,
+  cadenas : <Lock size={20} color="#f97316" />,
+  phone: <Phone size={20} color="black" />,
+  trash: <Trash size={20} color="#991b1b" />,
+  clock: <Clock size={20} color="#f59e0b" />
 };

@@ -12,6 +12,14 @@ export const BigContainer = styled.div`
   }
 `;
 
+export const BigContainerUneSection = styled.div`
+    gap: 1.5rem;
+    padding: 2rem;
+    @media (max-width: 768px) {
+      padding: 0.2em;
+  }
+`;
+
 export const WelcomeSection = styled.div`
   padding: 1.2rem 2rem;
   background: #fff;

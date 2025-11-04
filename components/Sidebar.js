@@ -1,9 +1,11 @@
 import {
     SidebarContainer,
     SidebarItem,
-    TextTitre
+    TextTitre,
+    LogOut
 } from "@/components/Styles_pages/SidebarStyles";
 import Image from 'next/image';
+import { icons } from "@/components/Icons";
 
 export default function Sidebar({ items, onSelect, selected, isOpen }) {
   return (
@@ -25,8 +27,13 @@ export default function Sidebar({ items, onSelect, selected, isOpen }) {
             {item.icon}
             <span>{item.label}</span>
           </div>
+
         </SidebarItem>
       ))}
+      <LogOut style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            {icons.deconnexion}
+            <span>Déconnexion</span>
+      </LogOut>
     </SidebarContainer>
   );
 }
