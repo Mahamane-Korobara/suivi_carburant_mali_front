@@ -14,7 +14,6 @@ import DashboardPage from "@/components/pages/DashboardPage";
 import StationsPage from "@/components/pages/StationsPage";
 import CartePage from "@/components/pages/CartePage";
 import SignalementPage from "@/components/pages/SignalementPage";
-import RapportsPage from "@/components/pages/RapportsPage";
 
 // Mapping des pages
 const pages = {
