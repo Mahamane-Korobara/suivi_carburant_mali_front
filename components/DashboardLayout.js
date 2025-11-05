@@ -22,7 +22,6 @@ const pages = {
   stations: StationsPage,
   carte: CartePage,
   signalement: SignalementPage,
-  rapports: RapportsPage,
 };
 
 const items = [
@@ -30,7 +29,6 @@ const items = [
   { key: "stations", label: "Stations", icon: icons.stations },
   { key: "carte", label: "Carte", icon: icons.carte },
   { key: "signalement", label: "Signalement", icon: icons.alertes },
-  { key: "rapports", label: "Rapports", icon: icons.rapports },
 ];
 
 export default function DashboardLayout() {
