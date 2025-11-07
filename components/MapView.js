@@ -8,6 +8,6 @@ const Map = dynamic(() => import("./MapComponent"), {
   ssr: false,
 });
 
-export default function MapView() {
+export default function MapView({ stations }) {
   return <Map />;
 }
