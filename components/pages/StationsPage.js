@@ -7,7 +7,7 @@ import {
 } from "@/components/Styles_pages/StyleCommun";
 
 import { useState, useMemo } from "react";
-import { icons } from "@/components/Icons";
+import { icons } from "@/public/icons/Icons";
 import {
   HeaderRow,
   SearchInput,

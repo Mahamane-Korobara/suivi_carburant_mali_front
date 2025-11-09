@@ -6,9 +6,9 @@ import {
   SubmitButton,
   Text,
   Link,
-} from "@/components/FormStyles";
-import AuthLayout from "@/components/AuthLayout";
-import { API_BASE_URL } from "@/pages/api/url";
+} from "@/components/Styles_pages/FormStyles";
+import AuthLayout from "@/components/auth/AuthLayout";
+import { API_BASE_URL, getAuthHeaders, handleApiError } from "@/pages/api/config";
 
 export default function Home() {
   const router = useRouter();
@@ -40,10 +40,7 @@ export default function Home() {
 
       const response = await fetch(endpoint, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify(formData),
       });
 
@@ -74,8 +71,7 @@ export default function Home() {
         setError(data.message || "Identifiants incorrects");
       }
     } catch (err) {
-      console.error("Erreur:", err);
-      setError("Erreur de connexion au serveur.");
+      setError(handleApiError(err));
     } finally {
       setLoading(false);
     }

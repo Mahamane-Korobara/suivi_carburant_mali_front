@@ -8,9 +8,9 @@ import {
   SubmitButton,
   Text,
   Link,
-} from "@/components/FormStyles";
-import AuthLayout from "@/components/AuthLayout";
-import { API_BASE_URL } from "@/pages/api/url";
+} from "@/components/Styles_pages/FormStyles";
+import AuthLayout from "@/components/auth/AuthLayout";
+import { API_BASE_URL } from "@/pages/api/config";
 
 export default function Inscription() {
   const router = useRouter();

@@ -5,7 +5,7 @@ import {
     LogOut
 } from "@/components/Styles_pages/SidebarStyles";
 import Image from 'next/image';
-import { icons } from "@/components/Icons";
+import { icons } from "@/public/icons/Icons";
 
 export default function Sidebar({ items, onSelect, selected, isOpen }) {
   return (

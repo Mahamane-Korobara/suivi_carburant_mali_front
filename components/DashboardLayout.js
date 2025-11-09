@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
-import { icons } from "@/components/Icons";
+import { icons } from "@/public/icons/Icons";
 import { Menu, X } from "lucide-react";
 
 import {
