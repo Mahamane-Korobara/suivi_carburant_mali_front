@@ -69,7 +69,7 @@ class AdminService {
    * Récupère l'historique d'une station
    * @param {number} stationId 
    */
-  async getStationHistory(stationId) {
+ async getStationHistory(stationId) {
     const response = await fetch(`${API_BASE_URL}/api/admin/stations/${stationId}/history`, {
       method: 'GET',
       headers: getAuthHeaders(),

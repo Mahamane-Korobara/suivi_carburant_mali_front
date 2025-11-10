@@ -5,7 +5,7 @@ import {
   LogOut
 } from "@/components/Styles_pages/SidebarStyles";
 import Image from 'next/image';
-import { icons } from "@/public/icons/Icons";
+import { icons } from "@/components/utils/icons/Icons";
 import { useRouter } from "next/navigation";
 import AdminService from "@/pages/api/adminService";
 import StationService from "@/pages/api/stationService";

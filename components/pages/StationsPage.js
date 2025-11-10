@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/router";
 import adminService from "@/pages/api/adminService";
-import { icons } from "@/public/icons/Icons";
+import { icons } from "@/components/utils/icons/Icons";
 import {
   WelcomeSection,
   WelcomeTitle,
