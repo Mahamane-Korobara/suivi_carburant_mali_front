@@ -38,4 +38,4 @@ export const handleApiError = (error, customMessage = "Une erreur est survenue")
     // Erreur lors de la configuration de la requête
     return customMessage;
   }
-};
+}

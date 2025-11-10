@@ -8,12 +8,12 @@ import {
     Content,
     MenuButton,
     Overlay
-} from "@/components/Styles_pages/SidebarStyles";
+} from "@/components/Styles_pages/adminStyles/SidebarStyles";
 
-import DashboardPage from "@/components/pages/DashboardPage";
-import StationsPage from "@/components/pages/StationsPage";
-import CartePage from "@/components/pages/CartePage";
-import SignalementPage from "@/components/pages/SignalementPage";
+import DashboardPage from "@/components/pages/adminPages/DashboardPage";
+import StationsPage from "@/components/pages/adminPages/StationsPage";
+import CartePage from "@/components/pages/adminPages/CartePage";
+import SignalementPage from "@/components/pages/adminPages/SignalementPage";
 
 // Mapping des pages
 const pages = {

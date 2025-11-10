@@ -57,3 +57,13 @@ export const SectionTitle = styled.h2`
     font-size: 1rem;
   }
 `;
+
+export const BtnError = styled.button`
+  marginTop: "1rem",
+  padding: "0.5rem 1rem",
+  backgroundColor: "#f7b32b",
+  color: "white",
+  border: "none",
+  borderRadius: "6px",
+  cursor: "pointer",
+`;

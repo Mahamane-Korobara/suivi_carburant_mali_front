@@ -3,7 +3,7 @@ import {
   SidebarItem,
   TextTitre,
   LogOut
-} from "@/components/Styles_pages/SidebarStyles";
+} from "@/components/Styles_pages/adminStyles/SidebarStyles";
 import Image from 'next/image';
 import { icons } from "@/components/utils/icons/Icons";
 import { useRouter } from "next/navigation";

@@ -2,12 +2,14 @@ import { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/router";
 import adminService from "@/pages/api/adminService";
 import { icons } from "@/components/utils/icons/Icons";
+import useAdminAuth from "@/hooks/useAdminAuth";
 import {
   WelcomeSection,
   WelcomeTitle,
   WelcomeSubtitle,
   SectionTitle,
-  BigContainerUneSection
+  BigContainerUneSection,
+  BtnError
 } from "@/components/Styles_pages/StyleCommun";
 import {
   HeaderRow,
@@ -36,7 +38,7 @@ import {
   PaginationControls,
   PaginationButton,
   PageSizeSelect,
-} from "@/components/Styles_pages/StationStyles";
+} from "@/components/Styles_pages/adminStyles/StationStyles";
 
 // Mapping des statuts Laravel vers l'affichage
 const statusMapping = {
@@ -64,19 +66,6 @@ export default function StationsPage() {
   // États de pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-
-  // Charger les stations au montage
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const userType = localStorage.getItem("userType");
-
-    if (!token || userType !== "admin") {
-      router.push("/");
-      return;
-    }
-
-    loadStations();
-  }, [router]);
 
   // Charger les stations depuis l'API
   const loadStations = async () => {
@@ -116,6 +105,9 @@ export default function StationsPage() {
       setLoading(false);
     }
   };
+
+  // Charger les stations au montage
+  useAdminAuth(loadStations);
 
   // Filtrage local
   const filtered = useMemo(() => {
@@ -332,19 +324,11 @@ const handleViewDetails = async (station) => {
           </WelcomeSubtitle>
         </WelcomeSection>
         <BigContainerUneSection>
-          <button
+          <BtnError
             onClick={loadStations}
-            style={{
-              padding: "0.75rem 1.5rem",
-              backgroundColor: "#007bff",
-              color: "white",
-              border: "none",
-              borderRadius: "6px",
-              cursor: "pointer",
-            }}
           >
             Réessayer
-          </button>
+          </BtnError>
         </BigContainerUneSection>
       </>
     );

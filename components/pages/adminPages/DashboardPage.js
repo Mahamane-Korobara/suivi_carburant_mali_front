@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import adminService from "@/pages/api/adminService";
+import useAdminAuth from "@/hooks/useAdminAuth";
+
 import {
   StatCard,
   StatTitle,
@@ -10,13 +12,14 @@ import {
   CommuneItem,
   CommuneName,
   CommuneCount
-} from "@/components/Styles_pages/DashboardStyles";
+} from "@/components/Styles_pages/adminStyles/DashboardStyles";
 import {
   BigContainer,
   WelcomeSection,
   WelcomeTitle,
   WelcomeSubtitle,
   SectionTitle,
+  BtnError
 } from "@/components/Styles_pages/StyleCommun";
 
 export default function DashboardPage() {
@@ -26,19 +29,6 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    // Vérifier l'authentification
-    const token = localStorage.getItem("token");
-    const userType = localStorage.getItem("userType");
-
-    if (!token || userType !== "admin") {
-      router.push("/");
-      return;
-    }
-
-    // Charger les données
-    loadDashboardData();
-  }, [router]);
 
   const loadDashboardData = async () => {
     try {
@@ -66,7 +56,8 @@ export default function DashboardPage() {
       setLoading(false);
     }
   };
-
+  
+  useAdminAuth(loadDashboardData);
   // Affichage pendant le chargement
   if (loading) {
     return (
@@ -81,20 +72,11 @@ export default function DashboardPage() {
     return (
       <div style={{ padding: "2rem", textAlign: "center", color: "red" }}>
         <p>Erreur : {error}</p>
-        <button
+        <BtnError
           onClick={loadDashboardData}
-          style={{
-            marginTop: "1rem",
-            padding: "0.5rem 1rem",
-            backgroundColor: "#007bff",
-            color: "white",
-            border: "none",
-            borderRadius: "6px",
-            cursor: "pointer",
-          }}
         >
           Réessayer
-        </button>
+        </BtnError>
       </div>
     );
   }

@@ -8,7 +8,7 @@ import {
   SubmitButton,
   Text,
   Link,
-} from "@/components/Styles_pages/FormStyles";
+} from "@/components/Styles_pages/adminStyles/FormStyles";
 import AuthLayout from "@/components/auth/AuthLayout";
 import { API_BASE_URL } from "@/pages/api/config";
 

@@ -2,12 +2,14 @@ import { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/router";
 import adminService from "@/pages/api/adminService";
 import { icons } from "@/components/utils/icons/Icons";
+import useAdminAuth from "@/hooks/useAdminAuth";
 import {
   WelcomeSection,
   WelcomeTitle,
   WelcomeSubtitle,
   SectionTitle,
-  BigContainerUneSection
+  BigContainerUneSection,
+  BtnError
 } from "@/components/Styles_pages/StyleCommun";
 import {
   StatsRow,
@@ -20,7 +22,7 @@ import {
   MessageCell,
   ActionButton,
   DateText,
-} from "@/components/Styles_pages/SignalementStyles";
+} from "@/components/Styles_pages/adminStyles/SignalementStyles";
 import {
   Container,
   HeaderRow,
@@ -45,7 +47,7 @@ import {
   PaginationControls,
   PaginationButton,
   PageSizeSelect,
-} from "@/components/Styles_pages/StationStyles";
+} from "@/components/Styles_pages/adminStyles/StationStyles";
 
 const typeOptions = [
   { value: "all", label: "Tous" },
@@ -80,19 +82,6 @@ export default function SignalementPage() {
   const [typeFilter, setTypeFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(8);
-
-  // Charger les signalements au montage
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const userType = localStorage.getItem("userType");
-
-    if (!token || userType !== "admin") {
-      router.push("/");
-      return;
-    }
-
-    loadReports();
-  }, [router]);
 
   // Charger les signalements depuis l'API
   const loadReports = async () => {
@@ -131,6 +120,8 @@ export default function SignalementPage() {
     }
   };
 
+  // Charger les signalements au montage
+  useAdminAuth(loadReports);
   // Filtrage local
   const filtered = useMemo(() => {
     return reports.filter((r) => {
@@ -251,19 +242,11 @@ export default function SignalementPage() {
           </WelcomeSubtitle>
         </WelcomeSection>
         <BigContainerUneSection>
-          <button
+          <BtnError
             onClick={loadReports}
-            style={{
-              padding: "0.75rem 1.5rem",
-              backgroundColor: "#007bff",
-              color: "white",
-              border: "none",
-              borderRadius: "6px",
-              cursor: "pointer",
-            }}
           >
             Réessayer
-          </button>
+          </BtnError>
         </BigContainerUneSection>
       </>
     );

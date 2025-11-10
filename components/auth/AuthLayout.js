@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Page, Card, Header, Title, FooterDiv } from "@/components/Styles_pages/FormStyles";
+import { Page, Card, Header, Title, FooterDiv } from "@/components/Styles_pages/adminStyles/FormStyles";
 
 export default function AuthLayout({ title, children, footer, wide = false }) {
   return (
