@@ -1,3 +1,7 @@
+import { useState, useMemo, useEffect } from "react";
+import { useRouter } from "next/router";
+import adminService from "@/pages/api/adminService";
+import { icons } from "@/components/utils/icons/Icons";
 import {
   WelcomeSection,
   WelcomeTitle,
@@ -5,9 +9,6 @@ import {
   SectionTitle,
   BigContainerUneSection
 } from "@/components/Styles_pages/StyleCommun";
-
-import { useState, useMemo } from "react";
-import { icons } from "@/components/utils/icons/Icons";
 import {
   StatsRow,
   StatCard,
@@ -20,7 +21,6 @@ import {
   ActionButton,
   DateText,
 } from "@/components/Styles_pages/SignalementStyles";
-
 import {
   Container,
   HeaderRow,
@@ -47,80 +47,6 @@ import {
   PageSizeSelect,
 } from "@/components/Styles_pages/StationStyles";
 
-// Données fictives
-const initialReports = [
-  { 
-    id: 1, 
-    station: { name: "Station Total Hamdallaye", commune: "Bamako" },
-    type: "incident", 
-    message: "Pompe en panne depuis 2 jours, pas d'essence disponible. Les clients sont obligés d'aller ailleurs.",
-    created_at: "2024-11-04 10:30:00"
-  },
-  { 
-    id: 2, 
-    station: { name: "Station Shell Sikasso", commune: "Sikasso" },
-    type: "erreur", 
-    message: "Les prix affichés ne correspondent pas aux prix réels à la pompe. Différence de 50 FCFA/litre.",
-    created_at: "2024-11-04 09:15:00"
-  },
-  { 
-    id: 3, 
-    station: { name: "Station Oryx Kayes", commune: "Kayes" },
-    type: "autre", 
-    message: "Horaires d'ouverture incorrects sur la plateforme. La station ferme à 18h et non 20h.",
-    created_at: "2024-11-03 16:45:00"
-  },
-  { 
-    id: 4, 
-    station: { name: "Station Libya Oil Mopti", commune: "Mopti" },
-    type: "incident", 
-    message: "File d'attente de plus de 2 heures. Mauvaise organisation du personnel.",
-    created_at: "2024-11-03 14:20:00"
-  },
-  { 
-    id: 5, 
-    station: { name: "Station Pétro Ségou", commune: "Ségou" },
-    type: "erreur", 
-    message: "L'adresse GPS est incorrecte, impossible de trouver la station avec les coordonnées indiquées.",
-    created_at: "2024-11-02 11:30:00"
-  },
-  { 
-    id: 6, 
-    station: { name: "Station Total Tombouctou", commune: "Tombouctou" },
-    type: "incident", 
-    message: "Rupture de gasoil depuis une semaine. Pas de communication sur la date de réapprovisionnement.",
-    created_at: "2024-11-02 08:50:00"
-  },
-  { 
-    id: 7, 
-    station: { name: "Station Petroci Gao", commune: "Gao" },
-    type: "autre", 
-    message: "Le numéro de téléphone de contact ne répond jamais. Impossible de joindre le gérant.",
-    created_at: "2024-11-01 15:10:00"
-  },
-  { 
-    id: 8, 
-    station: { name: "Station Total Hamdallaye", commune: "Bamako" },
-    type: "incident", 
-    message: "Service client très désagréable. Le personnel refuse de servir certains clients.",
-    created_at: "2024-11-01 12:40:00"
-  },
-  { 
-    id: 9, 
-    station: { name: "Station Shell Kidal", commune: "Kidal" },
-    type: "erreur", 
-    message: "Statut 'disponible' alors que la station est fermée pour travaux depuis 3 jours.",
-    created_at: "2024-10-31 17:25:00"
-  },
-  { 
-    id: 10, 
-    station: { name: "Station Oryx Koutiala", commune: "Koutiala" },
-    type: "autre", 
-    message: "Photos de la station obsolètes. Demande de mise à jour avec nouvelles infrastructures.",
-    created_at: "2024-10-31 09:00:00"
-  },
-];
-
 const typeOptions = [
   { value: "all", label: "Tous" },
   { value: "incident", label: "Incidents" },
@@ -145,13 +71,67 @@ const formatDate = (dateString) => {
 };
 
 export default function SignalementPage() {
-  const [reports, setReports] = useState(initialReports);
+  const router = useRouter();
+  const [reports, setReports] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  
   const [query, setQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(8);
 
-  // Filtrage
+  // Charger les signalements au montage
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const userType = localStorage.getItem("userType");
+
+    if (!token || userType !== "admin") {
+      router.push("/");
+      return;
+    }
+
+    loadReports();
+  }, [router]);
+
+  // Charger les signalements depuis l'API
+  const loadReports = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await adminService.getReports();
+
+      // L'API retourne { success, message, data: { data: [], current_page, etc. } }
+      const reportsData = response.data?.data || response.data || [];
+      
+      // Transformer les données
+      const transformedReports = reportsData.map((report) => ({
+        id: report.id,
+        station: {
+          name: report.station?.name || "Station inconnue",
+          commune: report.station?.commune || "Non définie",
+        },
+        type: report.type || "autre",
+        message: report.message || "",
+        created_at: report.created_at,
+      }));
+
+      setReports(transformedReports);
+    } catch (err) {
+      console.error("Erreur:", err);
+      setError(err.message);
+      
+      if (err.message.includes("401") || err.message.includes("Unauthorized")) {
+        localStorage.clear();
+        router.push("/");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Filtrage local
   const filtered = useMemo(() => {
     return reports.filter((r) => {
       const matchesQuery = [r.station.name, r.station.commune, r.message]
@@ -186,14 +166,35 @@ export default function SignalementPage() {
     };
   }, [reports]);
 
-  const handleViewDetails = (report) => {
-    alert(`Signalement #${report.id}\n\nStation: ${report.station.name}\nType: ${report.type}\nMessage: ${report.message}\nDate: ${formatDate(report.created_at)}`);
+  // Voir les détails d'un signalement
+  const handleViewDetails = async (report) => {
+    try {
+      const response = await adminService.getReportDetails(report.id);
+      const details = response.data;
+      
+      alert(
+        `Signalement #${details.id}\n\nStation: ${details.station?.name}\nCommune: ${details.station?.commune}\nType: ${details.type}\nMessage: ${details.message}\nDate: ${formatDate(details.created_at)}`
+      );
+    } catch (err) {
+      // Fallback si l'API échoue
+      alert(
+        `Signalement #${report.id}\n\nStation: ${report.station.name}\nCommune: ${report.station.commune}\nType: ${report.type}\nMessage: ${report.message}\nDate: ${formatDate(report.created_at)}`
+      );
+    }
   };
 
-  const handleDelete = (id) => {
-    if (window.confirm("Êtes-vous sûr de vouloir supprimer ce signalement ?")) {
-      setReports(prev => prev.filter(r => r.id !== id));
+  // Supprimer un signalement
+  const handleDelete = async (id) => {
+    if (!window.confirm("Êtes-vous sûr de vouloir supprimer ce signalement ?")) {
+      return;
+    }
+
+    try {
+      await adminService.deleteReport(id);
       alert("Signalement supprimé avec succès !");
+      loadReports(); // Recharger la liste
+    } catch (err) {
+      alert("Erreur : " + err.message);
     }
   };
 
@@ -226,6 +227,47 @@ export default function SignalementPage() {
 
     return pages;
   };
+
+  // Affichage pendant le chargement
+  if (loading) {
+    return (
+      <>
+        <WelcomeSection>
+          <WelcomeTitle>Gestion des signalements</WelcomeTitle>
+          <WelcomeSubtitle>Chargement des données...</WelcomeSubtitle>
+        </WelcomeSection>
+      </>
+    );
+  }
+
+  // Affichage en cas d'erreur
+  if (error) {
+    return (
+      <>
+        <WelcomeSection>
+          <WelcomeTitle>Gestion des signalements</WelcomeTitle>
+          <WelcomeSubtitle style={{ color: "red" }}>
+            Erreur : {error}
+          </WelcomeSubtitle>
+        </WelcomeSection>
+        <BigContainerUneSection>
+          <button
+            onClick={loadReports}
+            style={{
+              padding: "0.75rem 1.5rem",
+              backgroundColor: "#007bff",
+              color: "white",
+              border: "none",
+              borderRadius: "6px",
+              cursor: "pointer",
+            }}
+          >
+            Réessayer
+          </button>
+        </BigContainerUneSection>
+      </>
+    );
+  }
 
   return (
     <>

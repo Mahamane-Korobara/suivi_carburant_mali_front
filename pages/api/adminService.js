@@ -1,4 +1,3 @@
-//api/adminService.js
 import { API_BASE_URL, getAuthHeaders } from './config';
 
 /**
@@ -69,7 +68,7 @@ class AdminService {
    * Récupère l'historique d'une station
    * @param {number} stationId 
    */
- async getStationHistory(stationId) {
+  async getStationHistory(stationId) {
     const response = await fetch(`${API_BASE_URL}/api/admin/stations/${stationId}/history`, {
       method: 'GET',
       headers: getAuthHeaders(),
@@ -167,6 +166,70 @@ class AdminService {
 
     if (!response.ok) {
       throw new Error('Erreur lors de la déconnexion');
+    }
+
+    return await response.json();
+  }
+
+  // ==================== SIGNALEMENTS ====================
+
+  /**
+   * Récupère la liste des signalements avec filtres
+   * @param {Object} filters - Filtres (search, page, etc.)
+   */
+  async getReports(filters = {}) {
+    const queryParams = new URLSearchParams();
+    
+    Object.keys(filters).forEach(key => {
+      if (filters[key] !== null && filters[key] !== undefined && filters[key] !== '') {
+        queryParams.append(key, filters[key]);
+      }
+    });
+
+    const url = `${API_BASE_URL}/api/admin/stations/reports${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
+    
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: getAuthHeaders(),
+    });
+
+    if (!response.ok) {
+      throw new Error('Erreur lors de la récupération des signalements');
+    }
+
+    return await response.json();
+  }
+
+  /**
+   * Récupère les détails d'un signalement
+   * @param {number} reportId 
+   */
+  async getReportDetails(reportId) {
+    const response = await fetch(`${API_BASE_URL}/api/admin/stations/reports/${reportId}`, {
+      method: 'GET',
+      headers: getAuthHeaders(),
+    });
+
+    if (!response.ok) {
+      throw new Error('Erreur lors de la récupération du signalement');
+    }
+
+    return await response.json();
+  }
+
+  /**
+   * Supprime un signalement
+   * @param {number} reportId 
+   */
+  async deleteReport(reportId) {
+    const response = await fetch(`${API_BASE_URL}/api/admin/stations/reports/${reportId}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders(),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Erreur lors de la suppression');
     }
 
     return await response.json();
