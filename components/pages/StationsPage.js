@@ -1,3 +1,7 @@
+import { useState, useMemo, useEffect } from "react";
+import { useRouter } from "next/router";
+import adminService from "@/pages/api/adminService";
+import { icons } from "@/public/icons/Icons";
 import {
   WelcomeSection,
   WelcomeTitle,
@@ -5,9 +9,6 @@ import {
   SectionTitle,
   BigContainerUneSection
 } from "@/components/Styles_pages/StyleCommun";
-
-import { useState, useMemo } from "react";
-import { icons } from "@/public/icons/Icons";
 import {
   HeaderRow,
   SearchInput,
@@ -35,54 +36,91 @@ import {
   PaginationControls,
   PaginationButton,
   PageSizeSelect,
-  LockedBadge,
 } from "@/components/Styles_pages/StationStyles";
 
-const initialStations = [
-  { id: 1, name: "Station Total Hamdallaye", manager: "Ali Traoré", phone: "+223 70 00 00 01", commune: "Bamako", status: "En attente" },
-  { id: 2, name: "Station Shell Sikasso", manager: "Fatoumata Diarra", phone: "+223 70 00 00 02", commune: "Sikasso", status: "Approuvé" },
-  { id: 3, name: "Station Oryx Kayes", manager: "Ibrahim Keita", phone: "+223 70 00 00 03", commune: "Kayes", status: "Rejeté" },
-  { id: 4, name: "Station Libya Oil Mopti", manager: "Awa Coulibaly", phone: "+223 70 00 00 04", commune: "Mopti", status: "En attente" },
-  { id: 5, name: "Station Pétro Ségou", manager: "Moussa Sangaré", phone: "+223 70 00 00 05", commune: "Ségou", status: "Approuvé" },
-  { id: 6, name: "Station Total Tombouctou", manager: "Aminata Touré", phone: "+223 70 00 00 06", commune: "Tombouctou", status: "Désactivé" },
-  { id: 7, name: "Station Petroci Gao", manager: "Seydou Camara", phone: "+223 70 00 00 07", commune: "Gao", status: "Approuvé" },
-  { id: 8, name: "Station Total Koulikoro", manager: "Mariam Koné", phone: "+223 70 00 00 08", commune: "Koulikoro", status: "En attente" },
-  { id: 9, name: "Station Shell Kidal", manager: "Abdoulaye Maiga", phone: "+223 70 00 00 09", commune: "Kidal", status: "Rejeté" },
-  { id: 10, name: "Station Oryx Koutiala", manager: "Bintou Sidibé", phone: "+223 70 00 00 10", commune: "Koutiala", status: "Approuvé" },
-  { id: 11, name: "Station Libya Markala", manager: "Youssouf Dembélé", phone: "+223 70 00 00 11", commune: "Markala", status: "En attente" },
-  { id: 12, name: "Station Total San", manager: "Aissata Cissé", phone: "+223 70 00 00 12", commune: "San", status: "Désactivé" },
-];
-
-function nextStatus(current) {
-  const cycle = {
-    "En attente": "Approuvé",
-    "Approuvé": "Désactivé",
-    "Désactivé": "Approuvé",
-  };
-  return cycle[current] || current; // Ne change pas si Rejeté
-}
+// Mapping des statuts Laravel vers l'affichage
+const statusMapping = {
+  pending: "En attente",
+  approved: "Approuvé",
+  rejected: "Rejeté",
+};
 
 const statusOptions = [
   { value: "all", label: "Tous" },
-  { value: "En attente", label: "En attente" },
-  { value: "Approuvé", label: "Approuvé" },
-  { value: "Rejeté", label: "Rejeté" },
-  { value: "Désactivé", label: "Désactivé" },
+  { value: "pending", label: "En attente" },
+  { value: "approved", label: "Approuvé" },
+  { value: "rejected", label: "Rejeté" },
 ];
 
 export default function StationsPage() {
-  const [stations, setStations] = useState(initialStations);
+  const router = useRouter();
+  const [stations, setStations] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   
   // États de pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(10);
 
-  // Filtrage
+  // Charger les stations au montage
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const userType = localStorage.getItem("userType");
+
+    if (!token || userType !== "admin") {
+      router.push("/");
+      return;
+    }
+
+    loadStations();
+  }, [router]);
+
+  // Charger les stations depuis l'API
+  const loadStations = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const data = await adminService.getStations();
+      
+      // Transformer les données pour correspondre à votre structure
+      const transformedStations = data.map((station) => ({
+        id: station.id,
+        name: station.name,
+        manager: station.gerant_name || "Non défini",
+        phone: station.phone || "Non défini",
+        email: station.email || "",
+        commune: station.commune,
+        quartier: station.quartier || "",
+        address: station.address || "",
+        latitude: station.latitude,
+        longitude: station.longitude,
+        status: station.status, // pending, approved, rejected
+        fuelStatuses: station.fuel_statuses || [],
+        updatedAt: station.updated_at,
+      }));
+
+      setStations(transformedStations);
+    } catch (err) {
+      console.error("Erreur:", err);
+      setError(err.message);
+      
+      if (err.message.includes("401") || err.message.includes("Unauthorized")) {
+        localStorage.clear();
+        router.push("/");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Filtrage local
   const filtered = useMemo(() => {
     return stations.filter((s) => {
-      const matchesQuery = [s.name, s.manager, s.phone, s.commune]
+      const matchesQuery = [s.name, s.manager, s.phone, s.commune, s.quartier]
         .join(" ")
         .toLowerCase()
         .includes(query.toLowerCase());
@@ -104,21 +142,142 @@ export default function StationsPage() {
     setCurrentPage(1);
   }, [query, statusFilter, pageSize]);
 
-  const toggleStatus = (id, currentStatus) => {
-    // Empêche le changement si le statut est "Rejeté"
-    if (currentStatus === "Rejeté") {
-      alert("Les stations rejetées ne peuvent pas changer de statut.");
+  // Approuver une station
+  const handleApprove = async (stationId) => {
+    if (!confirm("Êtes-vous sûr de vouloir approuver cette station ?")) {
       return;
     }
 
-    setStations((prev) =>
-      prev.map((s) => (s.id === id ? { ...s, status: nextStatus(s.status) } : s))
-    );
+    try {
+      await adminService.approveStation(stationId);
+      alert("Station approuvée avec succès !");
+      loadStations(); // Recharger la liste
+    } catch (err) {
+      alert("Erreur : " + err.message);
+    }
   };
 
-  const handleViewDetails = (station) => {
-    alert(`Détails de ${station.name}\n\nGérant: ${station.manager}\nCommune: ${station.commune}\nTéléphone: ${station.phone}\nStatut: ${station.status}`);
+  // Rejeter une station
+  const handleReject = async (stationId) => {
+    const reason = prompt("Raison du rejet:");
+    
+    if (!reason) return;
+
+    try {
+      await adminService.rejectStation(stationId, reason);
+      alert("Station rejetée avec succès !");
+      loadStations();
+    } catch (err) {
+      alert("Erreur : " + err.message);
+    }
   };
+
+  // Désactiver une station
+  const handleDisable = async (stationId) => {
+    if (!confirm("Êtes-vous sûr de vouloir désactiver cette station ?")) {
+      return;
+    }
+
+    try {
+      await adminService.disableStation(stationId);
+      alert("Station désactivée avec succès !");
+      loadStations();
+    } catch (err) {
+      alert("Erreur : " + err.message);
+    }
+  };
+
+  // Réactiver une station
+  const handleReactivate = async (stationId) => {
+    if (!confirm("Êtes-vous sûr de vouloir réactiver cette station ?")) {
+      return;
+    }
+
+    try {
+      await adminService.reactivateStation(stationId);
+      alert("Station réactivée avec succès !");
+      loadStations();
+    } catch (err) {
+      alert("Erreur : " + err.message);
+    }
+  };
+
+  // Voir les détails avec historique
+const handleViewDetails = async (station) => {
+  try {
+    // Récupération de l’historique
+    const history = await adminService.getStationHistory(station.id);
+
+    // Fonction pour formater les dates
+    const formatDate = (isoString) => {
+      const date = new Date(isoString);
+      return date.toLocaleString("fr-FR", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    };
+
+    // Construction du texte d'historique
+    let historyText = "\n\n--- Historique ---\n";
+    history.history.forEach((h) => {
+      historyText += `\n${formatDate(h.created_at)}: ${h.status}`;
+    });
+
+    // Construction du texte principal avec toutes les infos utiles
+    let details = `
+      Détails de la station : ${station.name}
+
+      Gérant : ${station.manager}
+      Email : ${station.email || "Non défini"}
+      Téléphone : ${station.phone || "Non défini"}
+
+      Adresse : ${station.address || "Non précisée"}
+      Quartier : ${station.quartier || "Non défini"}
+      Commune : ${station.commune || "Non définie"}
+
+      Statut : ${statusMapping[station.status] || station.status}
+      ${historyText}
+          `;
+
+    // Ajout des statuts carburants
+    if (station.fuelStatuses?.length) {
+      details += "\n\n--- Statuts des carburants ---\n";
+      station.fuelStatuses.forEach((fuel) => {
+        details += `${fuel.fuel_type}: ${fuel.status}\n`;
+      });
+    }
+
+    alert(details);
+
+  } catch (err) {
+    // Si l’historique n’est pas dispo, afficher les infos sans
+    const details = `
+      Détails de la station : ${station.name}
+
+      Gérant : ${station.manager}
+      Email : ${station.email || "Non défini"}
+      Téléphone : ${station.phone || "Non défini"}
+
+      Adresse : ${station.address || "Non précisée"}
+      Quartier : ${station.quartier || "Non défini"}
+      Commune : ${station.commune || "Non définie"}
+
+      Latitude : ${station.latitude ?? "Non définie"}
+      Longitude : ${station.longitude ?? "Non définie"}
+
+      Statut : ${statusMapping[station.status] || station.status}
+
+      Historique non disponible.
+          `;
+
+    alert(details);
+  }
+};
+
+
 
   const goToPage = (page) => {
     setCurrentPage(Math.max(1, Math.min(page, totalPages)));
@@ -149,6 +308,47 @@ export default function StationsPage() {
 
     return pages;
   };
+
+  // Affichage pendant le chargement
+  if (loading) {
+    return (
+      <>
+        <WelcomeSection>
+          <WelcomeTitle>Stations, sous contrôle</WelcomeTitle>
+          <WelcomeSubtitle>Chargement des données...</WelcomeSubtitle>
+        </WelcomeSection>
+      </>
+    );
+  }
+
+  // Affichage en cas d'erreur
+  if (error) {
+    return (
+      <>
+        <WelcomeSection>
+          <WelcomeTitle>Stations, sous contrôle</WelcomeTitle>
+          <WelcomeSubtitle style={{ color: "red" }}>
+            Erreur : {error}
+          </WelcomeSubtitle>
+        </WelcomeSection>
+        <BigContainerUneSection>
+          <button
+            onClick={loadStations}
+            style={{
+              padding: "0.75rem 1.5rem",
+              backgroundColor: "#007bff",
+              color: "white",
+              border: "none",
+              borderRadius: "6px",
+              cursor: "pointer",
+            }}
+          >
+            Réessayer
+          </button>
+        </BigContainerUneSection>
+      </>
+    );
+  }
 
   return (
     <>
@@ -205,13 +405,8 @@ export default function StationsPage() {
                   <StationCard key={s.id}>
                     <CardHeader>
                       <CardTitle>{s.name}</CardTitle>
-                      <StatusButton 
-                        status={s.status} 
-                        disabled={s.status === "Rejeté"}
-                        onClick={() => toggleStatus(s.id, s.status)}
-                      >
-                        {s.status}
-                        {s.status === "Rejeté" && icons.cadenas}
+                      <StatusButton status={statusMapping[s.status]}>
+                        {statusMapping[s.status]}
                       </StatusButton>
                     </CardHeader>
                     
@@ -234,9 +429,27 @@ export default function StationsPage() {
                       <ActionButton variant="primary" onClick={() => handleViewDetails(s)}>
                         Voir détails
                       </ActionButton>
-                      {s.status !== "Rejeté" && (
-                        <ActionButton onClick={() => toggleStatus(s.id, s.status)}>
-                          Changer statut
+                      
+                      {s.status === "pending" && (
+                        <>
+                          <ActionButton onClick={() => handleApprove(s.id)}>
+                            Approuver
+                          </ActionButton>
+                          <ActionButton onClick={() => handleReject(s.id)}>
+                            Rejeter
+                          </ActionButton>
+                        </>
+                      )}
+                      
+                      {s.status === "approved" && (
+                        <ActionButton onClick={() => handleDisable(s.id)}>
+                          Désactiver
+                        </ActionButton>
+                      )}
+                      
+                      {s.status === "rejected" && (
+                        <ActionButton onClick={() => handleReactivate(s.id)}>
+                          Réactiver
                         </ActionButton>
                       )}
                     </CardActions>
@@ -254,7 +467,7 @@ export default function StationsPage() {
                       <Th>Commune</Th>
                       <Th>Téléphone</Th>
                       <Th style={{ width: 160 }}>Statut</Th>
-                      <Th style={{ width: 100 }}>Actions</Th>
+                      <Th style={{ width: 200 }}>Actions</Th>
                     </tr>
                   </thead>
                   <tbody>
@@ -265,20 +478,39 @@ export default function StationsPage() {
                         <Td>{s.commune}</Td>
                         <Td>{s.phone}</Td>
                         <Td>
-                          <StatusButton 
-                            status={s.status}
-                            disabled={s.status === "Rejeté"}
-                            onClick={() => toggleStatus(s.id, s.status)}
-                            title={s.status === "Rejeté" ? "Statut verrouillé" : "Cliquer pour changer"}
-                          >
-                            {s.status}
-                            {s.status === "Rejeté" && icons.cadenas}
+                          <StatusButton status={statusMapping[s.status]}>
+                            {statusMapping[s.status]}
                           </StatusButton>
                         </Td>
                         <Td>
-                          <ActionButton onClick={() => handleViewDetails(s)}>
-                            Détails
-                          </ActionButton>
+                          <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+                            <ActionButton onClick={() => handleViewDetails(s)}>
+                              Détails
+                            </ActionButton>
+                            
+                            {s.status === "pending" && (
+                              <>
+                                <ActionButton onClick={() => handleApprove(s.id)}>
+                                  Approuver
+                                </ActionButton>
+                                <ActionButton onClick={() => handleReject(s.id)}>
+                                  Rejeter
+                                </ActionButton>
+                              </>
+                            )}
+                            
+                            {s.status === "approved" && (
+                              <ActionButton onClick={() => handleDisable(s.id)}>
+                                Désactiver
+                              </ActionButton>
+                            )}
+                            
+                            {s.status === "rejected" && (
+                              <ActionButton onClick={() => handleReactivate(s.id)}>
+                                Réactiver
+                              </ActionButton>
+                            )}
+                          </div>
                         </Td>
                       </tr>
                     ))}
