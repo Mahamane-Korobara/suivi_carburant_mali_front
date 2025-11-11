@@ -7,7 +7,6 @@ import {
   WelcomeSection,
   WelcomeTitle,
   WelcomeSubtitle,
-  SectionTitle,
   BigContainerUneSection,
   BtnError
 } from "@/components/Styles_pages/StyleCommun";
@@ -39,6 +38,7 @@ import {
   PaginationButton,
   PageSizeSelect,
 } from "@/components/Styles_pages/adminStyles/StationStyles";
+import PageHeader from "@/components/adminPageHeader";
 
 // Mapping des statuts Laravel vers l'affichage
 const statusMapping = {
@@ -336,14 +336,11 @@ const handleViewDetails = async (station) => {
 
   return (
     <>
-      <WelcomeSection>
-        <WelcomeTitle>Stations, sous contrôle</WelcomeTitle>
-        <WelcomeSubtitle>
-          Suivez leur activité, détectez les anomalies et gardez une vision claire du terrain.
-        </WelcomeSubtitle>
-      </WelcomeSection>
-
-      <SectionTitle>Gestion des Stations</SectionTitle>
+      <PageHeader
+        title="Stations, sous contrôle"
+        subtitle="Suivez leur activité, détectez les anomalies et gardez une vision claire du terrain."
+        sectionTitle="Gestion des Stations"
+      />
       
       <BigContainerUneSection>
         <Container>

@@ -6,7 +6,7 @@ import {
   SubmitButton,
   Text,
   Link,
-} from "@/components/Styles_pages/adminStyles/FormStyles";
+} from "@/components/Styles_pages/FormStyles";
 import AuthLayout from "@/components/auth/AuthLayout";
 import { API_BASE_URL, getAuthHeaders, handleApiError } from "@/pages/api/config";
 
@@ -65,7 +65,7 @@ export default function Home() {
         if (userType === "admin") {
           router.push("/dashboard");
         } else {
-          router.push("/station/dashboard");
+          router.push("/station");
         }
       } else {
         setError(data.message || "Identifiants incorrects");

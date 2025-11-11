@@ -14,13 +14,11 @@ import {
   CommuneCount
 } from "@/components/Styles_pages/adminStyles/DashboardStyles";
 import {
-  BigContainer,
-  WelcomeSection,
-  WelcomeTitle,
-  WelcomeSubtitle,
   SectionTitle,
+  BigContainer,
   BtnError
 } from "@/components/Styles_pages/StyleCommun";
+import PageHeader from "@/components/adminPageHeader";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -84,15 +82,12 @@ export default function DashboardPage() {
   // Affichage des données
   return (
     <>
-      <WelcomeSection>
-        <WelcomeTitle>Bienvenue sur KARBU</WelcomeTitle>
-        <WelcomeSubtitle>
-          Votre meilleure expérience de gestion de carburant commence ici
-        </WelcomeSubtitle>
-      </WelcomeSection>
+      <PageHeader
+        title="Bienvenue sur KARBU"
+        subtitle="Votre meilleure expérience de gestion de carburant commence ici"
+        sectionTitle="Stations"
+      />
 
-      {/* Stats Stations */}
-      <SectionTitle>Stations</SectionTitle>
       <BigContainer>
         <StatCard>
           <StatTitle>Stations approuvées</StatTitle>

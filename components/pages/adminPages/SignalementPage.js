@@ -3,11 +3,11 @@ import { useRouter } from "next/router";
 import adminService from "@/pages/api/adminService";
 import { icons } from "@/components/utils/icons/Icons";
 import useAdminAuth from "@/hooks/useAdminAuth";
+import PageHeader from "@/components/adminPageHeader";
 import {
   WelcomeSection,
   WelcomeTitle,
   WelcomeSubtitle,
-  SectionTitle,
   BigContainerUneSection,
   BtnError
 } from "@/components/Styles_pages/StyleCommun";
@@ -254,15 +254,11 @@ export default function SignalementPage() {
 
   return (
     <>
-      <WelcomeSection>
-        <WelcomeTitle>Gestion des signalements</WelcomeTitle>
-        <WelcomeSubtitle>
-          Consultez, analysez et gérez les signalements envoyés par les usagers concernant les stations-service.
-          Chaque signalement contribue à améliorer la fiabilité du réseau et à maintenir la transparence sur le terrain.
-        </WelcomeSubtitle>
-      </WelcomeSection>
-
-      <SectionTitle>Signalements</SectionTitle>
+    <PageHeader
+      title="Gestion des signalements"
+      subtitle="Consultez, analysez et gérez les signalements envoyés par les usagers concernant les stations-service. Chaque signalement contribue à améliorer la fiabilité du réseau et à maintenir la transparence sur le terrain."
+      sectionTitle="Signalements"
+    />
 
       <BigContainerUneSection>
         <Container>
