@@ -1,4 +1,3 @@
-// components/Icons.js
 import {
   Fuel,
   MapPin,
@@ -15,17 +14,18 @@ import {
   Lock,
   Clock,
   Trash,
+  ArrowLeft
 } from "lucide-react";
 
 // Dictionnaire centralisé des icônes de l’app KARBU
 export const icons = {
   // Pages principales
   dashboard: <Home size={20} color="#0ea5e9" />,        // Bleu clair
-  stations: <Fuel size={20} color="#10b981" />,          // Vert carburant
-  carte: <Map size={20} color="#f59e0b" />,              // Orange
-  usagers: <Users size={20} color="#6366f1" />,          // Indigo
-  alertes: <AlertTriangle size={20} color="#ef4444" />,  // Rouge
-  rapports: <ClipboardList size={20} color="#8b5cf6" />, // Violet
+  stations: <Fuel size={20} color="#10b981" />,         // Vert carburant
+  carte: <Map size={20} color="#f59e0b" />,             // Orange
+  usagers: <Users size={20} color="#6366f1" />,         // Indigo
+  alertes: <AlertTriangle size={20} color="#ef4444" />, // Rouge
+  rapports: <ClipboardList size={20} color="#8b5cf6" />,// Violet
 
   // Fonctions secondaires
   notifications: <Bell size={20} color="#22d3ee" />,
@@ -35,8 +35,11 @@ export const icons = {
   // Autres utiles
   localisation: <MapPin size={20} color="#0ea5e9" />,
   niveau: <Gauge size={20} color="#22c55e" />,
-  cadenas : <Lock size={20} color="#f97316" />,
+  cadenas: <Lock size={20} color="#f97316" />,
   phone: <Phone size={20} color="black" />,
   trash: <Trash size={20} color="#991b1b" />,
-  clock: <Clock size={20} color="#f59e0b" />
+  clock: <Clock size={20} color="#f59e0b" />,
+
+  // Nouveaux
+  arrowLeft: <ArrowLeft size={20} color="#fff" />,
 };

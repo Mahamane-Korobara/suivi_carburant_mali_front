@@ -1,8 +1,9 @@
 import React from 'react';
 import FuelStatusCard from '@/components/fuel/FuelStatusCard';
 import FuelActionsButtons from '@/components/fuel/FuelActionsButtons';
+import { PageContainer, Header } from '@/components/Styles_pages/stationStyles/FuelStyles';
 
-export default function FuelStatusPage() {
+export default function FuelStatusPage({ onNavigateToHistory }) {
   // Données simulées
   const fuels = [
     { id: 1, type: 'Essence', status: 'Disponible' },
@@ -12,11 +13,6 @@ export default function FuelStatusPage() {
 
   const handleStatusChange = (fuelType, newStatus) => {
     console.log(`Statut mis à jour : ${fuelType} → ${newStatus}`);
-    // Ici, tu peux appeler adminService.updateFuelStatus(...)
-  };
-
-  const handleHistoryClick = () => {
-    alert("Accès à l'historique...");
   };
 
   const handleAddClick = () => {
@@ -24,10 +20,10 @@ export default function FuelStatusPage() {
   };
 
   return (
-    <div style={{ padding: '1rem', backgroundColor: '#23272f', minHeight: '100vh' }}>
-      <h1 style={{ color: 'white', fontSize: '1.2rem' }}>
+    <PageContainer>
+      <Header>
         Sélectionnez un statut pour mettre à jour la disponibilité
-      </h1>
+      </Header>
 
       {fuels.map((fuel) => (
         <FuelStatusCard
@@ -39,9 +35,9 @@ export default function FuelStatusPage() {
       ))}
 
       <FuelActionsButtons
-        onHistoryClick={handleHistoryClick}
         onAddClick={handleAddClick}
+        onHistoryClick={onNavigateToHistory}
       />
-    </div>
+    </PageContainer>
   );
 }
