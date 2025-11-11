@@ -1,4 +1,4 @@
-import { API_BASE_URL, getAuthHeaders } from './config';
+import { API_BASE_URL, getAuthHeaders } from '@/pages/api/config';
 
 /**
  * Service pour les appels API Admin

@@ -1,62 +1,101 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import stationService from '@/pages/api/stationService';
 import FuelHistoryCard from '@/components/fuel/FuelHistoryCard';
 import { PageContainer, Header, BackButton } from '@/components/Styles_pages/stationStyles/FuelStyles';
 import { icons } from "@/components/utils/icons/Icons";
+
+const statusDisplayMapping = {
+  disponible: 'Disponible',
+  peu: 'Peu disponible',
+  rupture: 'En rupture',
+};
+
 export default function FuelHistoryPage({ onNavigateToStatus }) {
-  // Données simulées - remplace par un appel API
-  const historyData = [
-    {
-      id: 1,
-      fuelType: 'Gazole B7',
-      oldStatus: 'Disponible',
-      newStatus: 'Indisponible',
-      date: '24/05/2024 à 14:32',
-      statusIcon: 'warning',
-    },
-    {
-      id: 2,
-      fuelType: 'Sans Plomb 98',
-      oldStatus: 'Indisponible',
-      newStatus: 'Disponible',
-      date: '24/05/2024 à 11:15',
-      statusIcon: 'success',
-    },
-    {
-      id: 3,
-      fuelType: 'SP95-E10',
-      oldStatus: 'Disponible',
-      newStatus: 'Indisponible',
-      date: '23/05/2024 à 18:45',
-      statusIcon: 'warning',
-    },
-    {
-      id: 4,
-      fuelType: 'Gazole B7',
-      oldStatus: 'Indisponible',
-      newStatus: 'Disponible',
-      date: '23/05/2024 à 09:02',
-      statusIcon: 'success',
-    },
-  ];
+  const router = useRouter();
+  const [history, setHistory] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const userType = localStorage.getItem("userType");
+    if (!token || userType !== "station") router.push("/");
+
+    loadHistory();
+  }, [router]);
+
+  const loadHistory = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await stationService.getFuelHistory();
+
+      const transformedHistory = response.data.map(item => {
+        let statusIcon = 'success';
+        if (item.status === 'rupture') statusIcon = 'error';
+        else if (item.status === 'peu') statusIcon = 'warning';
+
+        return {
+          id: item.id,
+          fuelType: item.fuel_type,
+          oldStatus: item.old_status ? statusDisplayMapping[item.old_status] : 'Statut initial',
+          newStatus: statusDisplayMapping[item.status] || item.status,
+          date: item.created_at,
+          statusIcon
+        };
+      });
+
+      setHistory(transformedHistory);
+    } catch (err) {
+      console.error(err);
+      setError(err.message);
+      if (err.message.includes("401")) {
+        localStorage.clear();
+        router.push("/");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) return (
+    <PageContainer>
+      <BackButton onClick={onNavigateToStatus}>{icons.arrowLeft} Retour</BackButton>
+      <Header>Chargement de l'historique...</Header>
+    </PageContainer>
+  );
+
+  if (error) return (
+    <PageContainer>
+      <BackButton onClick={onNavigateToStatus}>{icons.arrowLeft} Retour</BackButton>
+      <Header style={{color:"red"}}>Erreur : {error}</Header>
+      <button onClick={loadHistory}>Réessayer</button>
+    </PageContainer>
+  );
 
   return (
     <PageContainer>
-      <BackButton onClick={onNavigateToStatus}>
-        {icons.arrowLeft} Retour aux statuts
-      </BackButton>
+      <BackButton onClick={onNavigateToStatus}>{icons.arrowLeft} Retour</BackButton>
+      <Header>Historique des changements de statut (7 derniers jours)</Header>
 
-      <Header>Historique des changements de statut</Header>
-
-      {historyData.map((item) => (
-        <FuelHistoryCard
-          key={item.id}
-          fuelType={item.fuelType}
-          oldStatus={item.oldStatus}
-          newStatus={item.newStatus}
-          date={item.date}
-          statusIcon={item.statusIcon}
-        />
-      ))}
+      {history.length === 0 ? (
+        <div style={{textAlign:'center', padding:'2rem', color:'#94a3b8'}}>
+          Aucun changement de statut cette semaine
+        </div>
+      ) : (
+        history.map(item => (
+          <FuelHistoryCard
+            key={item.id}
+            fuelType={item.fuelType}
+            oldStatus={item.oldStatus}
+            newStatus={item.newStatus}
+            date={item.date}
+            statusIcon={item.statusIcon}
+          />
+        ))
+      )}
     </PageContainer>
   );
 }
