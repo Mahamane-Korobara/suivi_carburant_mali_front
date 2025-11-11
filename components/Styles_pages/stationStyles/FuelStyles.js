@@ -170,18 +170,19 @@ export const StatusChange = styled.p`
   color: ${({ status }) => {
     switch (status) {
       case 'Disponible':
-        return '#2ecc71';
-      case 'Indisponible':
-        return '#e74c3c';
-      case 'Peu':
-        return '#f39c12';
+        return '#2ecc71'; // vert
+      case 'Peu disponible':
+        return '#f39c12'; // orange
+      case 'En rupture':
+        return '#e74c3c'; // rouge
       default:
-        return '#95a5a6';
+        return '#95a5a6'; // gris
     }
   }};
   font-weight: bold;
   margin: 0 0 0.25rem 0;
 `;
+
 
 export const DateText = styled.span`
   color: #bdc3c7;
@@ -215,7 +216,7 @@ export const StatusIcon = styled.div`
 
 export const PageContainer = styled.div`
   padding: 0.3rem;
-  background-color: #23272f;
+  background-color: #3c3c3c;
   min-height: 100vh;
 `;
 
