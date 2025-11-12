@@ -228,7 +228,7 @@ export default function Inscription() {
               onClick={getGeolocation}
               style={{
                 padding: "0.5rem 1rem",
-                backgroundColor: "#007bff",
+                backgroundColor: "#f7b32b",
                 color: "white",
                 border: "none",
                 borderRadius: "4px",
@@ -304,9 +304,7 @@ export default function Inscription() {
             }
             readOnly
             style={{
-              backgroundColor: "#f8f9fa",
               cursor: "not-allowed",
-              color: formData.latitude ? "#000" : "#6c757d",
             }}
             required
           />
@@ -321,9 +319,7 @@ export default function Inscription() {
             }
             readOnly
             style={{
-              backgroundColor: "#f8f9fa",
               cursor: "not-allowed",
-              color: formData.longitude ? "#000" : "#6c757d",
             }}
             required
           />
@@ -342,7 +338,7 @@ export default function Inscription() {
             style={{
               gridColumn: "1 / -1",
               padding: "1rem",
-              backgroundColor: "#f8f9fa",
+              backgroundColor: "#e3e5e7ff",
               borderRadius: "6px",
             }}
           >
@@ -354,11 +350,12 @@ export default function Inscription() {
                 color: "#333",
               }}
             >
-              Types de carburant disponibles * :
+              Types de carburant disponibles <span style={{ color: "#dc3545" }}>*</span>
             </label>
             <div
               style={{
                 display: "flex",
+                justifyContent: "center",
                 gap: "1rem",
                 flexWrap: "wrap",
               }}
@@ -373,13 +370,13 @@ export default function Inscription() {
                     cursor: "pointer",
                     padding: "0.5rem 1rem",
                     backgroundColor: selectedFuels.includes(fuel.id)
-                      ? "#007bff"
+                      ? "#f7b32b"
                       : "white",
                     color: selectedFuels.includes(fuel.id) ? "white" : "#333",
                     borderRadius: "6px",
                     border: "2px solid",
                     borderColor: selectedFuels.includes(fuel.id)
-                      ? "#007bff"
+                      ? "#f7b32b"
                       : "#dee2e6",
                     transition: "all 0.3s ease",
                   }}
