@@ -68,7 +68,7 @@ export const Input = styled.input`
   font-size: 1rem;
   &:focus {
     outline: none;
-    border-color: #0070f3;
+    border-color: #f7b32b;
   }
   
   @media (max-width: 768px) {
@@ -147,7 +147,7 @@ export const GridInput = styled.input`
   box-sizing: border-box;
   &:focus {
     outline: none;
-    border-bottom: 1px solid #0070f3;
+    border-bottom: 1px solid #f7b32b;
   }
   
   @media (max-width: 768px) {
