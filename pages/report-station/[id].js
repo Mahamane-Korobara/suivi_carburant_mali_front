@@ -9,12 +9,19 @@ export default function ReportPage() {
   const { id } = router.query;
 
   const handleSuccess = () => {
-    alert("Signalement envoyé avec succès !\nMerci pour votre contribution");
-    router.back(); // Retour à la liste des stations
+    alert("Signalement envoyé avec succès !\nMerci pour votre contribution 🙏");
+    router.push('/user-stations'); // Retour à la liste des stations
   };
 
   if (!id) {
-    return <PageContainer>Chargement...</PageContainer>;
+    return (
+      <PageContainer>
+        <PublicPageHeader centerText="Signalement" />
+        <div style={{ textAlign: 'center', padding: '2rem', color: '#94a3b8' }}>
+          Chargement...
+        </div>
+      </PageContainer>
+    );
   }
 
   return (
