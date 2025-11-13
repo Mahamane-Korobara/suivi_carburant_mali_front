@@ -86,6 +86,7 @@ export default function Home() {
             Vous n&apos;avez pas de compte ?{" "}
             <Link href="/inscription">S&apos;inscrire</Link>
           </Text>
+          <Text>Vous êtes un simple utilisateur ? <Link href="/user-stations">Accéder à l'espace utilisateur</Link></Text>
         </>
       }
     >

@@ -146,3 +146,70 @@ export const ReportButton = styled.button`
     background-color: #e67e22;
   }
 `;
+
+
+// Styles pour la page de signalement
+
+export const FormContainer = styled.div`
+
+`;
+
+export const Title = styled.h2`
+  font-size: 1.25rem;
+  margin-bottom: 1.25rem;
+`;
+
+export const Select = styled.select`
+  width: 98%;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid transparent;
+  background: #414a5aff;
+  color: white;
+  font-size: 1rem;
+  margin-bottom: 1.75rem;
+  margin-top: 0.5rem;
+  &:focus {
+    outline: none;
+    border-color: #f39c12;
+  }
+`;
+
+export const TextArea = styled.textarea`
+  width: 90%;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid stransparent;
+  background: #414a5aff;
+  color: white;
+  font-size: 1rem;
+  resize: vertical;
+  margin-bottom: 1rem;
+  margin-top: 0.5rem;
+  min-height: 120px;
+
+  &:focus {
+    outline: none;
+    border-color: #f39c12;
+  }
+`;
+
+export const SubmitButton = styled.button`
+  width: 100%;
+  padding: 0.75rem;
+  background: #f39c12;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  &:hover { background: #e67e22; }
+  &:disabled { background: #95a5a6; cursor: not-allowed; }
+`;
+
+export const PageContainer = styled.div`
+  background: #494C4F;
+  min-height: 100vh;
+  padding: 1rem;
+  color: white;
+`;

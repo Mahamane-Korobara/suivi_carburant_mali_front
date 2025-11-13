@@ -70,7 +70,7 @@ const filteredStations = stations.filter(station => {
 
   return (
     <UserContainer>
-      <PublicPageHeader centerText="Liste des stations" />
+      <PublicPageHeader centerText="Stations" />
       <SearchBarComponent value={searchQuery} onChange={setSearchQuery} />
       <FilterBarComponent activeFilter={activeFilter} onFilterChange={setActiveFilter} />
 
