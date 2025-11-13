@@ -1,22 +1,27 @@
 import styled from "styled-components";
 
 export const UserContainer = styled.div`
-  background: #1e1e1e;
+  background: #494C4F;
   min-height: 100vh;
   padding: 1rem;
   color: white;
 `;
 
 export const SearchBar = styled.input`
-  width: 100%;
+  width: 90%;
   padding: 0.75rem 1rem;
   border-radius: 0.5rem;
-  border: none;
-  background: #2d2d2d;
+  outline: none;
+  border: 1px solid transparent;
+  background: #362c2cde;
   color: white;
   font-size: 1rem;
   margin-bottom: 1rem;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    &:focus {
+    outline: none;
+    border-color: #f39c12;
+  }
 `;
 
 export const FilterBar = styled.div`
@@ -29,31 +34,34 @@ export const FilterBar = styled.div`
 `;
 
 const statusColors = {
-  disponible: '#2ecc71', // vert
-  peu: '#f39c12',        // orange
-  rupture: '#e74c3c',    // rouge
-  all: '#34495e'         // gris
+  disponible: '#f39c12', 
+  peu: '#f39c12',        
+  rupture: '#f39c12',    
+  all: '#f39c12'        
 };
 
 export const FilterButton = styled.button`
   padding: 0.5rem 1rem;
   border-radius: 1rem;
+  border: none;
   font-size: 0.85rem;
   font-weight: bold;
   cursor: pointer;
   transition: all 0.2s ease;
 
-  background-color: ${({ active, value }) => active ? statusColors[value] || '#34495e' : '#34495e'};
+  background-color: ${({ active, value }) => active ? statusColors[value] || '#362c2cde' : '#362c2cde'};
   color: ${({ active }) => active ? 'white' : '#bdc3c7'};
 
   &:hover {
-    background-color: ${({ active, value }) => active ? statusColors[value] || '#34495e' : '#2c3e50'};
+    background-color: ${({ active, value }) => active ? statusColors[value] || '#362c2cde' : '#362c2cde'};
   }
 `;
 
 
 export const StationCard = styled.div`
-  background: #2d2d2d;
+  display: flex;
+  flex-direction: column; /* contenu vertical */
+  background: #362c2cde;
   border-radius: 0.5rem;
   padding: 1rem;
   margin-bottom: 1rem;
@@ -87,7 +95,8 @@ export const FuelTags = styled.div`
 
 export const FuelTag = styled.span`
   padding: 0.25rem 0.5rem;
-  border-radius: 0.5rem;
+  border-radius: 0.3rem;
+  border: none;
   font-size: 0.75rem;
   font-weight: bold;
   color: white;
@@ -96,37 +105,40 @@ export const FuelTag = styled.span`
     switch (status) {
       case 'disponible':
         return `
-          background-color: #2ecc71;
-          border: 1px solid #27ae60;
+          background-color: #81dba7ff;
+          color: green;
         `;
       case 'peu':
         return `
-          background-color: #f39c12;
-          border: 1px solid #e67e22;
+          background-color: #f7b449ff;
+          color: #8a5809ff;
         `;
       case 'rupture':
         return `
-          background-color: #e74c3c;
-          border: 1px solid #c0392b;
+          background-color: #e07266ff;
+          color: #7f1d1dff;
         `;
       default:
         return `
           background-color: #95a5a6;
-          border: 1px solid #7f8c8d;
         `;
     }
   }}
 `;
 
 export const ReportButton = styled.button`
-  width: 100%;
-  padding: 0.75rem 1rem;
+  align-self: flex-end; /* pousse le bouton à droite */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0.75rem;
+  margin-top: 1rem;
   background-color: #f39c12;
-  color: white;
+  color: black;
   border: none;
   border-radius: 0.5rem;
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 0.75rem;
   cursor: pointer;
   transition: background-color 0.2s ease;
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { StationCard, StationDistance, StationName, StationAddress, FuelTags, FuelTag, ReportButton } from '@/components/Styles_pages/userStyles/UserStyles';
+import { icons } from '@/components/utils/icons/Icons';
 
 export default function StationCardComponent({ station, onReport }) {
   const { name, address, distance, fuelTypes } = station;
@@ -11,16 +12,15 @@ export default function StationCardComponent({ station, onReport }) {
       <StationAddress>{address}</StationAddress>
 
       <FuelTags>
-  {fuelTypes.map((fuel, index) => (
-  <FuelTag key={index} status={fuel?.status}>
-    {String(fuel?.type)}
-  </FuelTag>
-))}
-
-</FuelTags>
+        {fuelTypes.map((fuel, index) => (
+          <FuelTag key={index} status={fuel?.status}>
+            {String(fuel?.type)}
+          </FuelTag>
+        ))}
+      </FuelTags>
 
       <ReportButton onClick={onReport}>
-        ⚠️ Signaler
+        {icons.flag} Signaler
       </ReportButton>
     </StationCard>
   );

@@ -38,6 +38,35 @@ export const WelcomeTitle = styled.h2`
   margin: 0 0 0.2rem 0;
 `;
 
+
+export const HeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between; /* texte à gauche, bouton à droite */
+  align-items: center;
+  margin-bottom: 1rem;
+`;
+
+export const WelcomeTitleStation = styled.h2`
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: white;
+`;
+
+export const LogoutButton = styled.button`
+  padding: 0.5rem 1rem;
+  background-color: #f39c12;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #e67e22;
+  }
+`;
+
 export const WelcomeSubtitle = styled.p`
   font-size: 0.85rem;
   color: #888;

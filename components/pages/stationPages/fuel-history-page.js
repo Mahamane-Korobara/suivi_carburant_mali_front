@@ -4,6 +4,7 @@ import stationService from '@/pages/api/stationService';
 import FuelHistoryCard from '@/components/fuel/FuelHistoryCard';
 import { PageContainer, Header, BackButton } from '@/components/Styles_pages/stationStyles/FuelStyles';
 import { icons } from "@/components/utils/icons/Icons";
+import StationPageHeader from '@/components/stationPageHeader';
 
 const statusDisplayMapping = {
   disponible: 'Disponible',
@@ -77,6 +78,7 @@ export default function FuelHistoryPage({ onNavigateToStatus }) {
 
   return (
     <PageContainer>
+      <StationPageHeader welcomeText="Bienvenue sur KARBU" />
       <BackButton onClick={onNavigateToStatus}>{icons.arrowLeft} Retour</BackButton>
       <Header>Historique des changements de statut (7 derniers jours)</Header>
 

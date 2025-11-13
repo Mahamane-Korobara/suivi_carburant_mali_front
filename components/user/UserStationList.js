@@ -3,6 +3,8 @@ import SearchBarComponent from '@/components/user/SearchBar';
 import FilterBarComponent from '@/components/user/FilterBar';
 import StationCardComponent from '@/components/user/StationCard';
 import { UserContainer } from '@/components/Styles_pages/userStyles/UserStyles';
+import PublicPageHeader from '@/components/usagerPageHeader';
+
 
 // Données simulées (à remplacer par API plus tard)
 const mockStations = [
@@ -68,6 +70,7 @@ const filteredStations = stations.filter(station => {
 
   return (
     <UserContainer>
+      <PublicPageHeader centerText="Liste des stations" />
       <SearchBarComponent value={searchQuery} onChange={setSearchQuery} />
       <FilterBarComponent activeFilter={activeFilter} onFilterChange={setActiveFilter} />
 

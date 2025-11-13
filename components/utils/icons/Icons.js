@@ -14,7 +14,9 @@ import {
   Lock,
   Clock,
   Trash,
-  ArrowLeft
+  ArrowLeft,
+  LogIn,
+  Flag
 } from "lucide-react";
 
 // Dictionnaire centralisé des icônes de l’app KARBU
@@ -42,4 +44,6 @@ export const icons = {
 
   // Nouveaux
   arrowLeft: <ArrowLeft size={20} color="#fff" />,
+  flag: <Flag size={16} color="black" />,
+  connexion: <LogIn size={16} color="#22c55e" />
 };

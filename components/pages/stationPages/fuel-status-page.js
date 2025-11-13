@@ -4,6 +4,7 @@ import stationService from '@/pages/api/stationService';
 import FuelStatusCard from '@/components/fuel/FuelStatusCard';
 import FuelActionsButtons from '@/components/fuel/FuelActionsButtons';
 import { PageContainer, Header } from '@/components/Styles_pages/stationStyles/FuelStyles';
+import StationPageHeader from '@/components/stationPageHeader';
 
 // Mapping des statuts Laravel → affichage
 const statusMapping = {
@@ -87,6 +88,7 @@ export default function FuelStatusPage({ onNavigateToHistory }) {
 
   return (
     <PageContainer>
+      <StationPageHeader welcomeText="Bienvenue sur KARBU" />
       <Header>Sélectionnez un statut pour mettre à jour la disponibilité</Header>
       {fuels.map(fuel => (
         <FuelStatusCard
