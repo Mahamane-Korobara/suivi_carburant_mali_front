@@ -14,6 +14,7 @@ import DashboardPage from "@/components/pages/adminPages/DashboardPage";
 import StationsPage from "@/components/pages/adminPages/StationsPage";
 import CartePage from "@/components/pages/adminPages/CartePage";
 import SignalementPage from "@/components/pages/adminPages/SignalementPage";
+import NotificationsPage from "@/components/pages/adminPages/NotificationsPage";
 
 // Mapping des pages
 const pages = {
@@ -21,6 +22,7 @@ const pages = {
   stations: StationsPage,
   carte: CartePage,
   signalement: SignalementPage,
+  notifications: NotificationsPage,
 };
 
 const items = [
@@ -28,6 +30,7 @@ const items = [
   { key: "stations", label: "Stations", icon: icons.stations },
   { key: "carte", label: "Carte", icon: icons.carte },
   { key: "signalement", label: "Signalement", icon: icons.alertes },
+  { key: "notifications", label: "Notifications", icon: icons.notifications },
 ];
 
 export default function DashboardLayout() {

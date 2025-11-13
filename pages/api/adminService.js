@@ -1,4 +1,5 @@
-import { API_BASE_URL, getAuthHeaders } from '@/pages/api/config';
+// lib/api/adminService.js
+import { API_BASE_URL, getAuthHeaders } from './config';
 
 /**
  * Service pour les appels API Admin
@@ -230,6 +231,42 @@ class AdminService {
     if (!response.ok) {
       const error = await response.json();
       throw new Error(error.message || 'Erreur lors de la suppression');
+    }
+
+    return await response.json();
+  }
+
+  // ==================== NOTIFICATIONS ====================
+
+  /**
+   * Récupère toutes les notifications
+   */
+  async getNotifications() {
+    const response = await fetch(`${API_BASE_URL}/api/admin/stations/notifications`, {
+      method: 'GET',
+      headers: getAuthHeaders(),
+    });
+
+    if (!response.ok) {
+      throw new Error('Erreur lors de la récupération des notifications');
+    }
+
+    return await response.json();
+  }
+
+  /**
+   * Marque une notification comme lue
+   * @param {number} notificationId 
+   */
+  async markNotificationAsRead(notificationId) {
+    const response = await fetch(`${API_BASE_URL}/api/admin/stations/notifications/${notificationId}/read`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Erreur lors de la mise à jour');
     }
 
     return await response.json();

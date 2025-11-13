@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const SidebarContainer = styled.div`
   width: 220px;
+  margin-right: 1rem;
   background: #23272f;
   color: #fff;
   min-height: 100vh;
@@ -104,8 +105,12 @@ export const Overlay = styled.div`
 export const LayoutContainer = styled.div`
   display: flex;
   min-height: 100vh;
+  margin-left: 1.5rem;
   position: relative;
   overflow: hidden; // Empêche le scroll global
+
+  @media (max-width: 768px) {
+    margin-left: 0;
 `;
 
 export const MenuButton = styled.button`
